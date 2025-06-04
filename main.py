@@ -13,5 +13,9 @@ tenant_df['Zip Code'] = tenant_df['Zip Code'].fillna(0).astype(int)     #Convert
 #Adding custom columns for analysis
 tenant_df['Annual Adjusted Income'] = tenant_df['Adjusted Monthly Income'] * 12
 tenant_df['Annual Tenant Rent'] = tenant_df['Monthly Tenant Rent'] * 12
-# print(tenant_df.dtypes)
-# print(tenant_df)
+
+#Transposing FMR DataFrame 
+fmr_transposed = fmr_df.set_index('ZIP Code').T
+
+# print(fmr_transposed)
+# print(fmr_transposed.columns)

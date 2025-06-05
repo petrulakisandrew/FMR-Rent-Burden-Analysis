@@ -14,8 +14,7 @@ tenant_df['Zip Code'] = tenant_df['Zip Code'].fillna(0).astype(int)     #Convert
 tenant_df['Annual Adjusted Income'] = tenant_df['Adjusted Monthly Income'] * 12
 tenant_df['Annual Tenant Rent'] = tenant_df['Monthly Tenant Rent'] * 12
 
-#Transposing FMR DataFrame 
-fmr_transposed = fmr_df.set_index('ZIP Code').T
+#Merging DataFrames Based on HAP and Zip Code
+merged_df = pd.merge(tenant_df, fmr_df, on = 'Zip Code', how = 'inner')
 
-# print(fmr_transposed)
-# print(fmr_transposed.columns)
+print(merged_df)

@@ -15,6 +15,32 @@ tenant_df['Annual Adjusted Income'] = tenant_df['Adjusted Monthly Income'] * 12
 tenant_df['Annual Tenant Rent'] = tenant_df['Monthly Tenant Rent'] * 12
 
 #Merging DataFrames Based on HAP and Zip Code
-merged_df = pd.merge(tenant_df, fmr_df, on = 'Zip Code', how = 'inner')
+unit_fmr = []
 
-print(merged_df)
+for i, row in tenant_df.iterrows():
+    zip_code = row['Zip Code']
+    bedrooms = row['Bedrooms']
+    
+    matchedfmr = fmr_df[fmr_df['Zip Code'] == zip_code]
+    
+    if matchedfmr.empty:
+        unit_fmr.append(None)
+    else:
+        if bedrooms == 0:
+            unit_fmr.append(matchedfmr.iloc[0]['Efficency'])
+        elif bedrooms == 1:
+            unit_fmr.append(matchedfmr.iloc[0]['One-Bedroom'])
+        elif bedrooms == 2:
+            unit_fmr.append(matchedfmr.iloc[0]['Two-Bedroom'])
+        elif bedrooms == 3:
+            unit_fmr.append(matchedfmr.iloc[0]['Three-Bedroom'])
+        elif bedrooms == 4:
+            unit_fmr.append(matchedfmr.iloc[0]['Four-Bedroom'])
+        else:
+            unit_fmr.append(None)
+        
+
+# print(unit_fmr)
+    
+tenant_df['FMR'] = unit_fmr
+print(tenant_df)

@@ -14,7 +14,7 @@ tenant_df['Zip Code'] = tenant_df['Zip Code'].fillna(0).astype(int)     #Convert
 tenant_df['Annual Adjusted Income'] = tenant_df['Adjusted Monthly Income'] * 12
 tenant_df['Annual Tenant Rent'] = tenant_df['Monthly Tenant Rent'] * 12
 
-#Merging DataFrames Based on HAP and Zip Code
+#Merging FMR based on Zip and Bedroom size onto tenant_df
 unit_fmr = []
 
 for i, row in tenant_df.iterrows():
@@ -43,4 +43,14 @@ for i, row in tenant_df.iterrows():
 # print(unit_fmr)
     
 tenant_df['FMR'] = unit_fmr
-print(tenant_df)
+tenant_df['FMR'] = tenant_df['FMR'].fillna(0).astype(int)
+# print(tenant_df)
+
+#Creating new sorted DataFrame for excel export
+sortedtenant_df = tenant_df[
+    (tenant_df['Voucher Payment Standard'] == tenant_df['FMR']) &     #Payment Standard Equals FMRs
+    (tenant_df['HAP'] >= 0.95 * tenant_df['Voucher Payment Standard'])&     #HAP equals 95% or more of Payment Standard
+    (tenant_df['Annual Adjusted Income'] != 0)    #Removing all tenants that have an annual income of 0
+].reset_index()
+
+# print(sortedtenant_df)

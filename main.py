@@ -1,5 +1,6 @@
 #Imports
 import pandas as pd
+import openpyxl
 
 #Importing Tenant Info and FMR DataFrames
 tenant_df = pd.read_excel('C:/Users/Andrew Petrulakis/Desktop/Reports/Rent Analysis/Rent Burden - FMR Analysis (DHA HCV)/Tenant Info.xlsx')
@@ -48,9 +49,12 @@ tenant_df['FMR'] = tenant_df['FMR'].fillna(0).astype(int)
 
 #Creating new sorted DataFrame for excel export
 sortedtenant_df = tenant_df[
-    (tenant_df['Voucher Payment Standard'] == tenant_df['FMR']) &     #Payment Standard Equals FMRs
-    (tenant_df['HAP'] >= 0.95 * tenant_df['Voucher Payment Standard'])&     #HAP equals 95% or more of Payment Standard
+    # (tenant_df['Voucher Payment Standard'] == tenant_df['FMR']) &     #Payment Standard Equals FMRs
+    # (tenant_df['HAP'] >= 0.95 * tenant_df['Voucher Payment Standard'])&     #HAP equals 95% or more of Payment Standard
     (tenant_df['Annual Adjusted Income'] != 0)    #Removing all tenants that have an annual income of 0
 ].reset_index()
 
 # print(sortedtenant_df)
+
+#Sorted DataFrame exported to Excel
+sortedtenant_df.to_excel('Rent Burden Analysis - DHA FMRs.xlsx', index=False)
